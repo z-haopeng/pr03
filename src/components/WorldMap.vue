@@ -1,8 +1,8 @@
 <template>
     <v-container fill-height>
         <h1 class="text-center">Where Is The ISS Now?</h1>
-        <svg></svg>
         <div class="text-center">{{coordinates}}</div>
+        <svg></svg>
     </v-container>
 </template>
 
@@ -29,10 +29,10 @@ export default {
         axios.get(`https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json`)
             .then(response => {
                 this.landmasses = response.data;
-                axios.get(`http://api.open-notify.org/iss-now.json`)
+                axios.get(`https://api.wheretheiss.at/v1/satellites/25544`)
                     .then(iss_response => {
-                        this.renderMap(iss_response.data.iss_position);
-                        setInterval(this.update, 5000);
+                        this.renderMap(iss_response.data);
+                        setInterval(this.update, 3000);
                     });
             });
     },
@@ -80,13 +80,12 @@ export default {
             this.map.append("circle")
                 .attr("cx", projection([iss.longitude, iss.latitude])[0])
                 .attr("cy", projection([iss.longitude, iss.latitude])[1])
-                .attr("r", 2)
+                .attr("r", 1)
                 .attr("fill", "red")
                 .transition()
-                    .attr("r", 5).delay(250).duration(1000);
+                    .attr("r", 3).delay(0).duration(1000);
 
             this.coordinates = this.coordString(iss);
-            console.log(this.coordinates);
         },
 
         coordString(pos) {
