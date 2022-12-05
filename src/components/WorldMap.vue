@@ -107,7 +107,7 @@ export default {
         },
 
         update() {
-            axios.get(`http://api.open-notify.org/iss-now.json`)
+            axios.get(`https://api.wheretheiss.at/v1/satellites/25544`)
                 .then(iss_response => {
                     this.drawCircle(iss_response.data.iss_position);
                 });
